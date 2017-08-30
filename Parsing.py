@@ -24,12 +24,12 @@ def parse(url):
         if text[i] == chr(10) and i > 0:
             break
 
-        allpost = []
-        allpost.append({
-            'title': title,
-            'text': text[1:i],
-            'url': posturl[0].a.get('href'),
-            'imageurl': image[0].a.get('href')
-        })
+    allpost = []
+    allpost.append({
+        'title': title,
+        'text': text[1:i],
+        'url': posturl[0].a.get('href'),
+        'imageurl': image[0].a.get('href')
+    })
 
     return(allpost[0])
