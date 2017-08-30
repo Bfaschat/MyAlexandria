@@ -7,8 +7,11 @@ bot = telebot.TeleBot(TelegramToken.Token)
 
 Last_Post = []
 
+index = 0
+
 while True:
-    New_Post = Parsing.parse('https://myalexandriya.blogspot.com/')
+    New_Post = Parsing.parse('https://myalexandriya.blogspot.com/',index)
+    index += 1
     if Last_Post != New_Post:
         f = open('Users.txt')
         count = int(f.readline())
