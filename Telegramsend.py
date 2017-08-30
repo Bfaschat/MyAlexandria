@@ -2,7 +2,6 @@ import telebot
 import TelegramToken
 import Parsing
 import time
-import urllib.request as urllib2
 
 bot = telebot.TeleBot(TelegramToken.Token)
 
