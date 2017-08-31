@@ -1,10 +1,18 @@
 import telebot
 import TelegramToken
+import Parsing
 
 bot = telebot.TeleBot(TelegramToken.Token)
 
 users = []
 count = 0
+
+f = open('Users.txt')
+count = int(f.readline())
+users = []
+for i in range(count):
+    users.append(int(f.readline()))
+f.close()
 
 @bot.message_handler(content_types=['text'])
 def handler_text(user):
@@ -15,8 +23,18 @@ def handler_text(user):
     print('Message from', user.from_user.first_name, user.from_user.last_name, message)
 
     Vrubaem = True
-    if message == '/stop' or message == 'Нет':
+    if message == 'Нет':
         Vrubaem = False
+
+    if message == 'Выдать последние 5':
+        Posts = Parsing.parse('https://myalexandriya.blogspot.com/', 0, 4)
+        for New_Post in Posts:
+            bot.send_message(user.chat.id,"<b>" + New_Post['title'] + "</b>" + chr(10) + chr(10) + New_Post['text'] + chr(10) + chr(10) + "<a href = \"" + New_Post['url'] + "\">Читать полностью...</a>", parse_mode = 'HTML')
+
+    if message == 'Выдать последние 10':
+        Posts = Parsing.parse('https://myalexandriya.blogspot.com/', 0, 9)
+        for New_Post in Posts:
+            bot.send_message(user.chat.id,"<b>" + New_Post['title'] + "</b>" + chr(10) + chr(10) + New_Post['text'] + chr(10) + chr(10) + "<a href = \"" + New_Post['url'] + "\">Читать полностью...</a>", parse_mode='HTML')
 
     if message == '/start' or message == 'Да':
         boolean = True
@@ -32,6 +50,10 @@ def handler_text(user):
             f.close()
             print('New User:', user.from_user.first_name, user.from_user.last_name, user.chat.id)
         bot.send_message(user.chat.id,'Сейчас функция отправки новостей включена. Вы можете отключить её в любой момент: /stop')
+        user_markup = telebot.types.ReplyKeyboardMarkup(True, True)
+        user_markup.row('Выдать последние 5', 'Выдать последние 10')
+        user_markup.row('Не надо')
+        bot.send_message(user.chat.id, 'Выдать последние новости?',reply_markup=user_markup)
 
     if message == '/stop':
         if user.chat.id in users:
@@ -53,4 +75,4 @@ def handler_text(user):
         bot.send_message(user.chat.id,'У вас не включена функция отправки новостей, включить?',reply_markup=user_markup)
 
 
-bot.polling(none_stop=True, interval=3)
+bot.polling(none_stop=True, interval=0)
