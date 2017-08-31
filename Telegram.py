@@ -22,6 +22,14 @@ def handler_text(user):
     message = user.text
     print('Message from', user.from_user.first_name, user.from_user.last_name, message)
 
+    if message == '/last':
+        Posts = Parsing.parse('https://myalexandriya.blogspot.com/', 0, 0)
+        for New_Post in Posts:
+            bot.send_message(user.chat.id,"<b>" + New_Post['title'] + "</b>" + chr(10) + chr(10) + New_Post['text'] + chr(10) + chr(10) + "<a href = \"" + New_Post['url'] + "\">Читать полностью...</a>",parse_mode='HTML')
+
+    if message == '/status':
+        bot.send_message(user.chat.id,'Server is running')
+
     Vrubaem = True
     if message == 'Нет':
         Vrubaem = False
