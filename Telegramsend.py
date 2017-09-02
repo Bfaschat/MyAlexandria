@@ -5,10 +5,10 @@ import time
 
 bot = telebot.TeleBot(TelegramToken.Token)
 
-Last_Post = []
-
 index1 = 0
 index2 = 0
+
+Last_Post = Parsing.parse('https://myalexandriya.blogspot.com/',index1, index2)
 
 while True:
     New_Post = Parsing.parse('https://myalexandriya.blogspot.com/',index1, index2)
