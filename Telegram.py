@@ -1,6 +1,7 @@
 import telebot
 import TelegramToken
 import Parsing
+import time
 
 bot = telebot.TeleBot(TelegramToken.Token)
 
@@ -20,7 +21,10 @@ def handler_text(user):
     global count
 
     message = user.text
-    print('Message from', user.from_user.first_name, user.from_user.last_name, message)
+    print(time.ctime(time.time()),'Message from', user.from_user.first_name, user.from_user.last_name, message)
+
+    if message == 'Krasava':
+        bot.send_message(user.chat.id,'<pre>==My respect to you==</pre>',parse_mode='HTML')
 
     if message == '/last':
         Posts = Parsing.parse('https://myalexandriya.blogspot.com/', 0, 0)
@@ -82,5 +86,10 @@ def handler_text(user):
         user_markup.row('Да','Нет')
         bot.send_message(user.chat.id,'У вас не включена функция отправки новостей, включить?',reply_markup=user_markup)
 
-
-bot.polling(none_stop=True, interval=0)
+while True:
+    try:
+        bot.polling(none_stop=False, interval=0)
+        print('lol')
+    except Exception as e:
+        for i in range(15):
+            print('')
